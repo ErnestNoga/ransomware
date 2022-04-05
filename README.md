@@ -1,4 +1,5 @@
 ## About
+- **TESTED ON ARCH LINUX ONLY**
 - **INTENDED FOR EDUCATIONAL PURPOSES ONLY.**
 - This ransomware is a very simple program that encrypts instead of a whole drive only recursively files from the folder it was
 started from.
