@@ -6,9 +6,9 @@ started from.
 - It is very heavy on processor and even if I managed to lower RAM usage it's still not perfect.
 
 ## Requirements
-- `crypto++` C++ library for `ransomware.cpp`.
+- `crypto++` C++ library for `ransomware.cpp` installed from source.
 - `wget`, `dd` and `yes` for `maketest.sh`.
-- `gcc` for build.
+- `c++` compiler (recommended `g++`).
 
 ## Build
 1. `git clone https://github.com/ErnestNoga/ransomware`
